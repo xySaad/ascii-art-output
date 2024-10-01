@@ -10,10 +10,10 @@ func main() {
 	args := os.Args
 
 	if len(args) < 3 {
-		fmt.Fprintln(os.Stderr, "missing arguments OwO")
+		fmt.Fprintln(os.Stderr, "missing arguments")
 	}
 	if len(args) > 3 {
-		fmt.Fprintln(os.Stderr, "too many arguments UwU")
+		fmt.Fprintln(os.Stderr, "too many arguments")
 	}
 
 	if len(args) != 3 {
@@ -27,8 +27,7 @@ func main() {
 		return
 	}
 	fileLines := strings.Split(string(plainTxt), "\n")
-
-	if len(fileLines) != 865 {
+	if len(fileLines) != 856 {
 		fmt.Fprintln(os.Stderr, "banner file", args[2], "has been modified and is invalid")
 		return
 	}
