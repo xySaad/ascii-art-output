@@ -12,13 +12,12 @@ func main() {
 	bannerName, err := utils.GetBannerName()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		fmt.Fprintln(os.Stderr, "Usage: go run . [STRING] [BANNER]")
 		return
 	}
 
 	plainTxt, err := os.ReadFile("./assets/banners/" + bannerName + ".txt")
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err, "\nUsage: go run . [STRING] [BANNER]")
+		fmt.Fprintln(os.Stderr, err, "\nUsage: go run . [STRING] [BANNER]\nEX: go run . something standard")
 		return
 	}
 	fileLines := strings.Split(string(plainTxt), "\n")
