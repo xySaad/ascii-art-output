@@ -4,35 +4,30 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"ascii-art/utils"
 )
 
 func main() {
-	args := os.Args
-
-	if len(args) < 3 {
-		fmt.Fprintln(os.Stderr, "missing arguments")
-	}
-	if len(args) > 3 {
-		fmt.Fprintln(os.Stderr, "too many arguments")
-	}
-
-	if len(args) != 3 {
+	bannerName, err := utils.GetBannerName()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
 		fmt.Fprintln(os.Stderr, "Usage: go run . [STRING] [BANNER]")
 		return
 	}
 
-	plainTxt, err := os.ReadFile("./banners/" + args[2] + ".txt")
+	plainTxt, err := os.ReadFile("./assets/banners/" + bannerName + ".txt")
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprintln(os.Stderr, err, "\nUsage: go run . [STRING] [BANNER]")
 		return
 	}
 	fileLines := strings.Split(string(plainTxt), "\n")
 	if len(fileLines) != 856 {
-		fmt.Fprintln(os.Stderr, "banner file", args[2], "has been modified and is invalid")
+		fmt.Fprintln(os.Stderr, "banner file", bannerName, "has been modified and is invalid")
 		return
 	}
 	// Fetch the input from command-line arguments and clean it
-	userInput := cleanstring(args[1])
+	userInput := utils.Cleanstring(os.Args[1])
 
 	if len(userInput) == 0 {
 		return
@@ -43,7 +38,7 @@ func main() {
 	// Split the input based on the newline delimiter
 	inputWords := strings.Split(userInput, "\\n")
 
-	if isempty(inputWords) {
+	if utils.Isempty(inputWords) {
 		inputWords = inputWords[:len(inputWords)-1]
 	}
 	// Iterate through each word and process it
@@ -66,26 +61,4 @@ func main() {
 			fmt.Println(strings.Join(renderedLine, ""))
 		}
 	}
-}
-
-// cleanstring removes all unprintable characters from a string
-func cleanstring(s string) string {
-	var cleanString []rune
-
-	for _, r := range s {
-		if r >= 32 && r <= 126 { // Check if the character is printable
-			cleanString = append(cleanString, r)
-		}
-	}
-
-	return string(cleanString)
-}
-
-func isempty(text []string) bool {
-	for _, l := range text {
-		if l != "" {
-			return false
-		}
-	}
-	return true
 }
