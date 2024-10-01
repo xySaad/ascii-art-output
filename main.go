@@ -9,9 +9,9 @@ import (
 )
 
 func main() {
-	bannerName, err := utils.GetBannerName()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+	bannerName, status := utils.GetBannerName()
+	if status != "OK" {
+		fmt.Fprintln(os.Stderr, "Usage: go run . [STRING] [BANNER]\nEX: go run . something standard")
 		return
 	}
 
@@ -20,7 +20,8 @@ func main() {
 		fmt.Fprintln(os.Stderr, err, "\nUsage: go run . [STRING] [BANNER]\nEX: go run . something standard")
 		return
 	}
-	fileLines := strings.Split(string(plainTxt), "\n")
+	txt := strings.ReplaceAll(string(plainTxt), "\r\n", "\n")
+	fileLines := strings.Split(txt, "\n")
 	if len(fileLines) != 856 {
 		fmt.Fprintln(os.Stderr, "banner file", bannerName, "has been modified and is invalid")
 		return
