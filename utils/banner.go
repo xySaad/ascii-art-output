@@ -2,6 +2,7 @@ package utils
 
 import (
 	"os"
+	"strings"
 )
 
 type Output struct {
@@ -33,7 +34,8 @@ func CheckArgs() (Args, string) {
 			return Args{}, ""
 		}
 		args.Output.Ok = true
-		args.Output.Path = os.Args[1][9:]
+		outputArg := strings.Split(os.Args[1][9:], "/")
+		args.Output.Path = outputArg[len(outputArg)-1]
 		if len(os.Args) >= 3 {
 			args.Text = os.Args[2]
 		}
