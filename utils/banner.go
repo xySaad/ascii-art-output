@@ -4,10 +4,15 @@ import (
 	"os"
 )
 
+type Output struct {
+	Path string
+	Ok   bool
+}
+
 type Args struct {
 	BannerName string
 	Text       string
-	Output     string
+	Output     Output
 }
 
 func CheckArgs() (Args, string) {
@@ -17,19 +22,32 @@ func CheckArgs() (Args, string) {
 	if len(os.Args) > 4 {
 		return Args{}, ""
 	}
-	result := Args{BannerName: "standard", Text: os.Args[1]}
+	args := Args{BannerName: "standard", Text: os.Args[1]}
 
-	if len(os.Args[1]) > 9 && os.Args[1][:9] == "--output=" {
-		result.Output = os.Args[1][9:]
+	if len(os.Args[1]) >= 9 && os.Args[1][:9] == "--output=" {
+
+		if len(os.Args) <= 2 {
+			return Args{}, ""
+		}
+		if len(os.Args[1]) <= 9 {
+			return Args{}, ""
+		}
+		args.Output.Ok = true
+		args.Output.Path = os.Args[1][9:]
 		if len(os.Args) >= 3 {
-			result.Text = os.Args[2]
+			args.Text = os.Args[2]
 		}
 		if len(os.Args) == 4 {
-			result.BannerName = os.Args[3]
+			args.BannerName = os.Args[3]
 		}
 	} else {
-		result.BannerName = os.Args[2]
+		if len(os.Args) > 3 {
+			return Args{}, ""
+		}
+		if len(os.Args) > 2 {
+			args.BannerName = os.Args[2]
+		}
 	}
 
-	return result, "OK"
+	return args, "OK"
 }

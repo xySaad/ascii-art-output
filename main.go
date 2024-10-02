@@ -30,7 +30,23 @@ func main() {
 	// Fetch the input from command-line arguments and clean it
 	userInput := utils.CleanString(args.Text)
 
+	var fd *os.File = nil
+	if args.Output.Ok {
+		err := os.MkdirAll("./output/", 0o744)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return
+		}
+		fd, err = os.OpenFile("./output/"+args.Output.Path, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0o644)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return
+		}
+		defer fd.Close()
+	}
+
 	if len(userInput) == 0 {
+		fd.Write([]byte{})
 		return
 	} else if userInput == "\\n" {
 		fmt.Println()
@@ -45,7 +61,11 @@ func main() {
 	// Iterate through each word and process it
 	for _, word := range inputWords {
 		if word == "" || word == "\n" {
-			fmt.Println()
+			if args.Output.Ok {
+				fd.Write([]byte("\n"))
+			} else {
+				fmt.Println()
+			}
 			continue
 		}
 
@@ -59,7 +79,11 @@ func main() {
 			}
 
 			// Output the constructed line by joining the slice
-			fmt.Println(strings.Join(renderedLine, ""))
+			if args.Output.Ok {
+				fd.Write([]byte(strings.Join(renderedLine, "") + "\n"))
+			} else {
+				fmt.Println(strings.Join(renderedLine, ""))
+			}
 		}
 	}
 }
