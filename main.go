@@ -49,6 +49,7 @@ func main() {
 		fd.Write([]byte{})
 		return
 	} else if userInput == "\\n" {
+		fd.Write([]byte("\n"))
 		fmt.Println()
 		return
 	}
