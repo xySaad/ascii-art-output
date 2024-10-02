@@ -1,7 +1,7 @@
 package utils
 
 // Cleanstring removes all unprintable characters from a string
-func Cleanstring(s string) string {
+func CleanString(s string) string {
 	var cleanString []rune
 
 	for _, r := range s {
@@ -13,7 +13,7 @@ func Cleanstring(s string) string {
 	return string(cleanString)
 }
 
-func Isempty(text []string) bool {
+func IsEmpty(text []string) bool {
 	for _, l := range text {
 		if l != "" {
 			return false

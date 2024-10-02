@@ -9,25 +9,26 @@ import (
 )
 
 func main() {
-	bannerName, status := utils.GetBannerName()
+	args, status := utils.CheckArgs()
+
 	if status != "OK" {
-		fmt.Fprintln(os.Stderr, "Usage: go run . [STRING] [BANNER]\nEX: go run . something standard")
+		fmt.Fprintln(os.Stderr, "Usage: go run . [OPTION] [STRING] [BANNER]\nEX: go run . --output=<fileName.txt> something standard")
 		return
 	}
 
-	plainTxt, err := os.ReadFile("./assets/banners/" + bannerName + ".txt")
+	plainTxt, err := os.ReadFile("./assets/banners/" + args.BannerName + ".txt")
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err, "\nUsage: go run . [STRING] [BANNER]\nEX: go run . something standard")
+		fmt.Fprintln(os.Stderr, err, "\nUsage: go run . [OPTION] [STRING] [BANNER]\nEX: go run . --output=<fileName.txt> something standard")
 		return
 	}
 	txt := strings.ReplaceAll(string(plainTxt), "\r\n", "\n")
 	fileLines := strings.Split(txt, "\n")
 	if len(fileLines) != 856 {
-		fmt.Fprintln(os.Stderr, "banner file", bannerName, "has been modified and is invalid")
+		fmt.Fprintln(os.Stderr, "banner file", args.BannerName, "has been modified and is invalid")
 		return
 	}
 	// Fetch the input from command-line arguments and clean it
-	userInput := utils.Cleanstring(os.Args[1])
+	userInput := utils.CleanString(args.Text)
 
 	if len(userInput) == 0 {
 		return
@@ -38,7 +39,7 @@ func main() {
 	// Split the input based on the newline delimiter
 	inputWords := strings.Split(userInput, "\\n")
 
-	if utils.Isempty(inputWords) {
+	if utils.IsEmpty(inputWords) {
 		inputWords = inputWords[:len(inputWords)-1]
 	}
 	// Iterate through each word and process it
