@@ -35,7 +35,11 @@ func CheckArgs() (Args, string) {
 		}
 		args.Output.Ok = true
 		outputArg := strings.Split(os.Args[1][9:], "/")
-		args.Output.Path = outputArg[len(outputArg)-1]
+		outputFile := outputArg[len(outputArg)-1]
+		if len(outputFile) <= 4 || outputFile[len(outputFile)-4:] != ".txt" {
+			return Args{}, ""
+		}
+		args.Output.Path = outputFile
 		if len(os.Args) >= 3 {
 			args.Text = os.Args[2]
 		}
