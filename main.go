@@ -32,12 +32,7 @@ func main() {
 
 	var fd *os.File = nil
 	if args.Output.Ok {
-		err := os.MkdirAll("./output/", 0o744)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return
-		}
-		fd, err = os.OpenFile("./output/"+args.Output.Path, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0o644)
+		fd, err = os.OpenFile(args.Output.Path, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0o644)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return
