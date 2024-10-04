@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	args, status := utils.CheckArgs()
+	args, status := utils.GetArgs()
 
 	if status != "OK" {
 		fmt.Fprintln(os.Stderr, "Usage: go run . [OPTION] [STRING] [BANNER]\nEX: go run . --output=<fileName.txt> something standard")
