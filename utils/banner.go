@@ -16,7 +16,7 @@ type Args struct {
 	Output     Output
 }
 
-func CheckArgs() (Args, string) {
+func GetArgs() (Args, string) {
 	if len(os.Args) < 2 {
 		return Args{}, ""
 	}
